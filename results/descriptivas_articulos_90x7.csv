@@ -1,0 +1,8 @@
+author,n,min_tokens,median_tokens,mean_tokens,max_tokens
+bard,90,409,969.0,981.4,1703
+claude-3-5-sonnet-20240620,90,480,981.0,981.8,1743
+deepseek-v3,90,542,1275.0,1262.3,2096
+gpt-3.5-turbo,90,495,1044.0,1035.2,1530
+gpt-4,90,576,983.0,970.8,1321
+humano,90,508,1197.0,1277.1,2763
+mixtral-8x7b-instruct-v0.1,90,562,1119.0,1149.0,2456

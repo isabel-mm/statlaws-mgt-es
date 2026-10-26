@@ -1,0 +1,9 @@
+# Versiones usadas en el artículo (Python 3.11)
+numpy==2.4.3
+pandas==2.3.3
+scipy==1.17.1
+scikit-learn==1.8.0
+matplotlib==3.10.8
+spacy==3.8.11
+# Modelo de spaCy (segmentación oracional):
+#   python -m spacy download es_core_news_sm   (v3.8.0)

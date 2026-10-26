@@ -1,0 +1,7 @@
+# El corpus ROBOT-TALK no se distribuye en este repositorio
+data/*.csv
+
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
