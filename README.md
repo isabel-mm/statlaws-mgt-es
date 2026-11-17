@@ -1,8 +1,7 @@
 # Leyes estadísticas del lenguaje y detección de textos robóticos
 
-**Materiales de replicación del artículo en *Linguamática*** · [Zenodo](https://doi.org/10.5281/zenodo.XXXXXXX) · [Cómo citar](#cómo-citar) · [Cambios](CHANGELOG.md)
+**Materiales de replicación del artículo en *Linguamática*** · [Zenodo](https://doi.org/10.5281/zenodo.24306546) · [Cómo citar](#cómo-citar) · [Cambios](CHANGELOG.md)
 
-<!-- Tras publicar en Zenodo, sustituir XXXXXXX por el número del DOI (aquí y en «Cómo citar») -->
 
 Este repositorio reúne el código, los resultados y las figuras del artículo:
 
@@ -100,7 +99,7 @@ Algunos detalles del procedimiento:
 
 Si utiliza estos materiales, cite el artículo y este repositorio (ver [`CITATION.cff`](CITATION.cff)):
 
-> Moyano-Moreno, I. (2026). *Leyes estadísticas del lenguaje y detección de textos robóticos: código y resultados* (v1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.XXXXXXX
+> Moyano-Moreno, I. (2026). *Leyes estadísticas del lenguaje y detección de textos robóticos: código y resultados* (v1.0.0) [Software]. Zenodo. https://doi.org/10.5281/zenodo.24306546
 
 ## Licencia
 

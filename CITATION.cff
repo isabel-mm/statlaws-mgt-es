@@ -8,7 +8,8 @@ authors:
     email: isabel.moyano@uca.es
     affiliation: "Instituto Universitario de Investigación en Lingüística Aplicada, Universidad de Cádiz"
 version: "1.0.0"
-date-released: "2026-11-06"
+doi: "10.5281/zenodo.24306546"
+date-released: "2026-11-17"
 license: MIT
 repository-code: "https://github.com/isabel-mm/statlaws-mgt-es"
 keywords:
