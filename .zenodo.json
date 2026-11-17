@@ -22,5 +22,12 @@
     "quantitative linguistics",
     "Spanish"
   ],
-  "notes": "Proyecto ROBOT-TALK (PID2022-140897OB-I00), financiado por MCIN/AEI/10.13039/501100011033 y por la Unión Europea (FEDER). Ayuda predoctoral FPU21/03261 del Ministerio de Universidades."
+  "notes": "Proyecto ROBOT-TALK (PID2022-140897OB-I00), financiado por MCIN/AEI/10.13039/501100011033 y por la Unión Europea (FEDER). Ayuda predoctoral FPU21/03261 del Ministerio de Universidades.",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/isabel-mm/statlaws-mgt-es",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
 }

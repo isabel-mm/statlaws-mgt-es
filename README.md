@@ -106,6 +106,10 @@ Si utiliza estos materiales, cite el artículo y este repositorio (ver [`CITATIO
 
 Código y resultados bajo licencia MIT (ver [`LICENSE`](LICENSE)). El corpus ROBOT-TALK no forma parte de este repositorio y se rige por sus propias condiciones.
 
+## Uso de IA generativa
+
+Para preparar este repositorio se ha utilizado Claude (Anthropic; modelo Claude Opus 5.5) como asistente para refactorizar y estructurar el código de los scripts, revisar su funcionamiento y redactar la documentación (README, CHANGELOG y metadatos de cita). El diseño del estudio, el método, los análisis y la interpretación de los resultados son de la autora, que ha revisado todos los cambios y es responsable del contenido.
+
 ## Contacto y financiación
 
 Isabel Moyano-Moreno · Instituto Universitario de Investigación en Lingüística Aplicada, Universidad de Cádiz · isabel.moyano@uca.es
