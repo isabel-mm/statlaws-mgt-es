@@ -1,8 +1,8 @@
-# baseline_delta.py
+# 07_baseline_delta.py
 # Baseline estilométrico: Delta de Burrows sobre palabras funcionales.
 # Las top-200 palabras más frecuentes del corpus (mayoritariamente funcionales
 # en español) se z-normalizan y se clasifican con LR, SVM y RF.
-# El protocolo es idéntico al de ablacion.py: GroupKFold(5) por pair_id.
+# El protocolo es idéntico al de 05_ablacion.py: GroupKFold(5) por pair_id.
 import re
 import warnings
 import numpy as np
@@ -152,6 +152,6 @@ try:
     for _, r in pd.concat([df_delta, full_stat]).iterrows():
         print(f"  {r['Condición']:33s}  {r['Modelo']:3s}  {r['F1 macro']:.3f}±{r['F1 std']:.3f}  {r['AUC']:.3f}±{r['AUC std']:.3f}")
 except FileNotFoundError:
-    print("\n(results/ablacion.csv no encontrado; ejecuta ablacion.py primero)")
+    print("\n(results/ablacion.csv no encontrado; ejecuta 05_ablacion.py primero)")
 
 print("\nGuardado: results/baseline_delta.csv")

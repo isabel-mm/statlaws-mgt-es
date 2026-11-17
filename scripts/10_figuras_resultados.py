@@ -1,4 +1,4 @@
-# generar_figuras.py — genera todas las figuras para el paper
+# 10_figuras_resultados.py — genera todas las figuras para el paper
 import pandas as pd
 import numpy as np
 import matplotlib
@@ -28,7 +28,12 @@ C_HEAPS = "#6699CC"  # azul medio
 C_BREV  = "#2E5F9E"  # azul acero
 C_ALL   = "#1A3A5C"  # azul marino
 
-# Clasificadores
+# Clasificadores (color + estilo de línea, para distinguirlos sin depender del color)
+CLF_STYLES = {
+    "Logistic Regression": ":",
+    "SVM (RBF)":           "--",
+    "Random Forest":       "-",
+}
 CLF_COLORS = {
     "Logistic Regression": "#6699CC",
     "SVM (RBF)":           "#2E5F9E",
@@ -51,8 +56,7 @@ ALL_METRICS = [
     "heaps_beta", "heaps_k", "heaps_r2",
     "brevity_slope", "brevity_corr",
     "mean_word_length", "ttr",
-    "hapax_rate", "herdan_c", "yule_k",
-    "shannon_entropy",
+    "hapax_rate",
     "long_word_ratio", "short_word_ratio",
     "mean_sent_len", "std_sent_len",
 ]
@@ -71,12 +75,9 @@ enc = LabelEncoder()
 y   = enc.fit_transform(df["corpus"].values)
 X   = df[ALL_METRICS].values
 groups = df["pair_id"].values
-sc_global = StandardScaler()
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # FIG 1 — Boxplots de las métricas más discriminativas
-# ═══════════════════════════════════════════════════════════════════════════════
 KEY_METRICS = [
     ("brevity_slope",    "Pendiente de brevedad"),
     ("brevity_corr",     "Correlación de brevedad"),
@@ -124,9 +125,7 @@ plt.close()
 print("Guardado: boxplots_metricas")
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # FIG 2 — Ablación: gráfico de barras diferencial (ΔF1 respecto al modelo completo)
-# ═══════════════════════════════════════════════════════════════════════════════
 df_abl = pd.read_csv("results/ablacion.csv")
 best = df_abl.groupby("Condición")["F1 macro"].max().reset_index()
 
@@ -192,9 +191,7 @@ plt.close()
 print("Guardado: ablacion_f1")
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# FIG 3 — Curvas ROC (18 rasgos, validación cruzada agrupada)
-# ═══════════════════════════════════════════════════════════════════════════════
+# FIG 3 — Curvas ROC (15 rasgos, validación cruzada agrupada)
 gkf = GroupKFold(n_splits=5)
 
 clfs = {
@@ -223,6 +220,7 @@ for name, clf in clfs.items():
     mean_auc = np.mean(aucs_cv)
     std_auc  = np.std(aucs_cv)
     ax.plot(mean_fpr, mean_tpr, color=CLF_COLORS[name], linewidth=2,
+            linestyle=CLF_STYLES[name],
             label=f"{name}  (AUC={mean_auc:.3f}±{std_auc:.3f})")
     ax.fill_between(mean_fpr,
                     np.mean(tprs, axis=0) - np.std(tprs, axis=0),
@@ -241,9 +239,7 @@ plt.close()
 print("Guardado: roc_curves")
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
 # FIG 4 — Scatter: economía léxica vs. sintáctica
-# ═══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(5.5, 4.5))
 ax.scatter(humano["mean_sent_len"], humano["mean_word_length"],
            color=C_HUM, alpha=0.55, s=24, label="TH",
@@ -260,143 +256,5 @@ for ext in ("pdf", "png"):
 plt.close()
 print("Guardado: scatter_economia")
 
-
-# ═══════════════════════════════════════════════════════════════════════════════
-# FIG 5 — Importancia de rasgos (RF, dataset completo)
-# ═══════════════════════════════════════════════════════════════════════════════
-rf_full = RandomForestClassifier(n_estimators=400, n_jobs=-1, random_state=SEED)
-rf_full.fit(sc_global.fit_transform(X), y)
-importances = rf_full.feature_importances_
-idx = np.argsort(importances)
-
-LABELS = {
-    "zipf_slope":       "Zipf α",
-    "zipf_r2":          "Zipf R²",
-    "zipf_top_cov":     "Zipf cobertura top-10",
-    "heaps_beta":       "Heaps β",
-    "heaps_k":          "Heaps k",
-    "heaps_r2":         "Heaps R²",
-    "brevity_slope":    "Brevedad — pendiente",
-    "brevity_corr":     "Brevedad — correlación",
-    "mean_word_length": "Long. media de palabra",
-    "ttr":              "TTR",
-    "hapax_rate":       "Tasa de hápax",
-    "herdan_c":         "C de Herdan",
-    "yule_k":           "K de Yule",
-    "shannon_entropy":  "Entropía de Shannon",
-    "long_word_ratio":  "Ratio palabras largas",
-    "short_word_ratio": "Ratio palabras cortas",
-    "mean_sent_len":    "Long. media de oración",
-    "std_sent_len":     "Desv. long. oración",
-}
-
-def imp_color(metric):
-    if metric.startswith("zipf"):    return C_ZIPF
-    if metric.startswith("heaps"):   return C_HEAPS
-    if metric in ("brevity_slope", "brevity_corr"): return C_BREV
-    return C_BREV + "99"
-
-bar_colors = [imp_color(ALL_METRICS[i]) for i in idx]
-labels_sorted = [LABELS[ALL_METRICS[i]] for i in idx]
-
-fig, ax = plt.subplots(figsize=(6.5, 6))
-ax.barh(labels_sorted, importances[idx], color=bar_colors, edgecolor="white")
-ax.set_xlabel("Importancia (Gini, Random Forest)")
-ax.legend(
-    handles=[
-        mpatches.Patch(facecolor=C_ZIPF,     label="Ley de Zipf"),
-        mpatches.Patch(facecolor=C_HEAPS,    label="Ley de Heaps"),
-        mpatches.Patch(facecolor=C_BREV,     label="Principio de brevedad"),
-    ],
-    frameon=False, fontsize=8, loc="lower right",
-)
-plt.tight_layout()
-for ext in ("pdf", "png"):
-    plt.savefig(f"{OUTDIR}/importancia_rasgos.{ext}", bbox_inches="tight")
-plt.close()
-print("Guardado: importancia_rasgos")
-
-
-# ═══════════════════════════════════════════════════════════════════════════════
-# FIG 6 — Radar chart: distancia de cada modelo al perfil humano por dimensión
-# ═══════════════════════════════════════════════════════════════════════════════
-
-# Grupos de ejes (mismos que en la ablación teórica)
-RADAR_GROUPS = {
-    "Zipf":                 ["zipf_slope", "zipf_r2", "zipf_top_cov"],
-    "Heaps":                ["heaps_beta", "heaps_k", "heaps_r2"],
-    "Brevedad\nparáms.":   ["brevity_slope", "brevity_corr"],
-    "Brevedad\nléxica":    ["mean_word_length", "long_word_ratio", "short_word_ratio"],
-    "Brevedad\nsintáctica":["mean_sent_len", "std_sent_len"],
-}
-
-# Colores de modelos: gradiente azul→terracota según ranking global
-MODEL_CFG = [
-    ("claude-3-5-sonnet-20240620", "Claude 3.5 Sonnet", "#2E5F9E", "-",  2.0),
-    ("deepseek-v3",                "DeepSeek-V3",        "#4A7DB5", "--", 1.7),
-    ("gpt-4",                      "GPT-4",              "#7099C0", "-.", 1.7),
-    ("gpt-3.5-turbo",              "GPT-3.5-turbo",      "#A07060", ":",  1.5),
-    ("bard",                       "Bard",               "#B05A30", "--", 1.5),
-    ("mixtral-8x7b-instruct-v0.1", "Mixtral-8x7B",      "#B5541E", "-",  1.5),
-]
-
-hum_r = df_raw[df_raw["author"] == "humano"]
-hum_med = {g: hum_r[cols].median() for g, cols in RADAR_GROUPS.items()}
-
-def group_distance(author_df, g, cols):
-    m_a = author_df[cols].median()
-    m_h = hum_med[g]
-    return ((m_a - m_h).abs() / m_h.abs()).mean()
-
-# Distancias por eje para todos los modelos
-raw_dist = {}
-for author, label, color, ls, lw in MODEL_CFG:
-    sub = df_raw[df_raw["author"] == author]
-    raw_dist[author] = [group_distance(sub, g, cols)
-                        for g, cols in RADAR_GROUPS.items()]
-
-# Within-axis normalisation: worst = 0, human = 1
-n_axes = len(RADAR_GROUPS)
-max_per_axis = [max(raw_dist[a][i] for a, *_ in MODEL_CFG) for i in range(n_axes)]
-sim = {a: [1 - raw_dist[a][i] / max_per_axis[i] for i in range(n_axes)]
-       for a, *_ in MODEL_CFG}
-
-# Angular positions
-labels_radar = list(RADAR_GROUPS.keys())
-angles = np.linspace(0, 2 * np.pi, n_axes, endpoint=False).tolist()
-angles += angles[:1]   # close the polygon
-
-fig, ax = plt.subplots(figsize=(5.5, 5.5), subplot_kw=dict(polar=True))
-
-# Reference rings
-for r, ls_r in [(0.25, ":"), (0.5, "--"), (0.75, ":"), (1.0, "-")]:
-    ax.plot(angles, [r] * (n_axes + 1), color="lightgray", lw=0.6, ls=ls_r, zorder=0)
-ax.set_yticks([0.25, 0.5, 0.75, 1.0])
-ax.set_yticklabels(["", "0,5", "", "1,0 (humano)"], fontsize=6.5, color="gray")
-ax.set_ylim(0, 1.05)
-
-# Human reference (outer ring, filled lightly)
-ax.fill(angles, [1.0] * (n_axes + 1), alpha=0.06, color=C_HUM)
-
-# Model polygons
-for author, label, color, ls, lw in MODEL_CFG:
-    vals = sim[author] + sim[author][:1]
-    ax.plot(angles, vals, lw=lw, ls=ls, color=color, label=label, zorder=2)
-    ax.fill(angles, vals, alpha=0.06, color=color, zorder=1)
-
-# Axis labels
-ax.set_xticks(angles[:-1])
-ax.set_xticklabels(labels_radar, fontsize=8, fontweight="bold")
-ax.tick_params(axis="x", pad=12)
-ax.spines["polar"].set_visible(False)
-
-ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.22),
-          ncol=3, frameon=False, fontsize=7.5)
-
-plt.tight_layout()
-for ext in ("pdf", "png"):
-    plt.savefig(f"{OUTDIR}/radar_modelos.{ext}", bbox_inches="tight")
-plt.close()
-print("Guardado: radar_modelos")
 
 print("\nTodas las figuras guardadas en figures/")

@@ -1,4 +1,4 @@
-# descriptivas.py — longitud (tokens) de los 90 artículos pareados por autor
+# 01_descriptivas.py — longitud (tokens) de los 90 artículos pareados por autor
 import re
 import pandas as pd
 

@@ -1,4 +1,4 @@
-# sensitivity_ventana.py
+# 09_sensibilidad_ventana.py
 # Analiza la sensibilidad de los resultados al tamaño de ventana bootstrap.
 # Para cada W ∈ {200, 400, 600, 800} tokens:
 #   - Extrae rasgos (n=30 iteraciones bootstrap, semilla fija)

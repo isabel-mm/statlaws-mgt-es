@@ -1,4 +1,4 @@
-# figures_leyes.py
+# 12_figuras_leyes.py
 # Genera tres figuras de ejemplo sobre el corpus humano:
 #   1. Ley de Zipf  (rango–frecuencia, log-log)
 #   2. Ley de Heaps (tokens–vocabulario, log-log)
@@ -45,9 +45,7 @@ print(f"Textos humanos cargados: {len(texts)}")
 
 all_tokens = [t for doc in texts for t in doc]
 
-# ══════════════════════════════════════════════════════════════════════════════
 # 1. LEY DE ZIPF
-# ══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(7, 4.5))
 
 # Textos individuales (semitransparentes)
@@ -91,9 +89,7 @@ plt.savefig(f"{OUT}/ley_zipf.png", dpi=DPI, bbox_inches="tight")
 plt.close()
 print("Guardado: ley_zipf.pdf")
 
-# ══════════════════════════════════════════════════════════════════════════════
 # 2. LEY DE HEAPS
-# ══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(7, 4.5))
 
 # Textos individuales
@@ -134,9 +130,7 @@ plt.savefig(f"{OUT}/ley_heaps.png", dpi=DPI, bbox_inches="tight")
 plt.close()
 print("Guardado: ley_heaps.pdf")
 
-# ══════════════════════════════════════════════════════════════════════════════
 # 3. PRINCIPIO DE BREVEDAD
-# ══════════════════════════════════════════════════════════════════════════════
 fig, ax = plt.subplots(figsize=(7, 4.5))
 
 # Scatter: cada tipo léxico = un punto (longitud, frecuencia)

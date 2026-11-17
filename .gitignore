@@ -1,7 +1,10 @@
 # El corpus ROBOT-TALK no se distribuye en este repositorio
 data/*.csv
+# demo.py guarda aquí el texto del corpus muestreado: no publicar
+results/corpus_balanceado.csv
 
 __pycache__/
 *.pyc
 .DS_Store
 .vscode/
+.ipynb_checkpoints/

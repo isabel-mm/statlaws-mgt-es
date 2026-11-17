@@ -1,0 +1,26 @@
+{
+  "title": "Leyes estadísticas del lenguaje y detección de textos robóticos: código y resultados",
+  "upload_type": "software",
+  "version": "1.0.0",
+  "language": "spa",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Moyano-Moreno, Isabel",
+      "affiliation": "Instituto Universitario de Investigación en Lingüística Aplicada, Universidad de Cádiz"
+    }
+  ],
+  "description": "<p>Materiales de replicación (código Python, tablas de resultados y figuras) del artículo <em>Las leyes estadísticas del lenguaje como marcador de estilo para la detección de textos robóticos en español</em> (Linguamática).</p><p>Se evalúan 15 rasgos estilométricos independientes del vocabulario, derivados de la ley de Zipf, la ley de Heaps y el principio de brevedad, para distinguir artículos científicos en español escritos por humanos de los generados por seis LLMs (Bard, Claude 3.5 Sonnet, DeepSeek-V3, GPT-3.5-turbo, GPT-4 y Mixtral-8x7B), sobre un panel pareado de 90 artículos × 7 autores del corpus ROBOT-TALK.</p><p><strong>English.</strong> Replication materials for the article <em>Statistical Laws of Language as a Stylometric Fingerprint for Machine-Generated Text Detection in Spanish</em>. The ROBOT-TALK corpus is not redistributed; extracted features (without text) are included so that all post-extraction analyses can be reproduced.</p>",
+  "keywords": [
+    "stylometry",
+    "authorship analysis",
+    "statistical laws of language",
+    "Zipf's law",
+    "Heaps' law",
+    "brevity principle",
+    "machine-generated text detection",
+    "quantitative linguistics",
+    "Spanish"
+  ],
+  "notes": "Proyecto ROBOT-TALK (PID2022-140897OB-I00), financiado por MCIN/AEI/10.13039/501100011033 y por la Unión Europea (FEDER). Ayuda predoctoral FPU21/03261 del Ministerio de Universidades."
+}

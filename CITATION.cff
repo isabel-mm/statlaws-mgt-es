@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "Si utiliza este código o estos resultados, cítelo como se indica a continuación. / If you use this code or these results, please cite them as below."
+title: "Leyes estadísticas del lenguaje y detección de textos robóticos: código y resultados"
+type: software
+authors:
+  - family-names: Moyano-Moreno
+    given-names: Isabel
+    email: isabel.moyano@uca.es
+    affiliation: "Instituto Universitario de Investigación en Lingüística Aplicada, Universidad de Cádiz"
+version: "1.0.0"
+date-released: "2026-11-06"
+license: MIT
+keywords:
+  - stylometry
+  - authorship analysis
+  - statistical laws of language
+  - Zipf's law
+  - Heaps' law
+  - brevity principle
+  - machine-generated text detection
+  - quantitative linguistics
+  - Spanish
+abstract: >-
+  Replication materials (Python code, result tables and figures) for the article
+  "Las leyes estadísticas del lenguaje como marcador de estilo para la detección
+  de textos robóticos en español". Fifteen vocabulary-independent stylometric
+  features derived from Zipf's law, Heaps' law and the brevity principle are used
+  to distinguish human-authored Spanish scientific articles from those generated
+  by six LLMs, on a paired panel of 90 articles × 7 authors from the ROBOT-TALK corpus.
+preferred-citation:
+  type: article
+  title: "Las leyes estadísticas del lenguaje como marcador de estilo para la detección de textos robóticos en español"
+  authors:
+    - family-names: Moyano-Moreno
+      given-names: Isabel
+  journal: "Linguamática"
+  year: 2026

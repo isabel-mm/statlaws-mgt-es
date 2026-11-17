@@ -1,4 +1,4 @@
-# radar_individuales.py — 6 radares individuales (humano vs. modelo) en cuadrícula 3×2
+# 11_figuras_radar.py — 6 radares individuales (humano vs. modelo) en cuadrícula 3×2
 import pandas as pd
 import numpy as np
 import matplotlib

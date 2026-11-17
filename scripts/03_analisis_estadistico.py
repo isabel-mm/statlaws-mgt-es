@@ -1,6 +1,6 @@
-# analisis_estadistico.py
+# 03_analisis_estadistico.py
 # Comparación global y pareada (TH vs TR) mediante pruebas no paramétricas y tamaño del efecto.
-# Requiere haber ejecutado demo.py primero.
+# Requiere haber ejecutado 02_extraccion_rasgos.py primero.
 import pandas as pd
 import numpy as np
 from scipy import stats
@@ -18,6 +18,28 @@ METRIC_LABELS = {
     "brevity_slope": "Brevedad (pendiente)",
     "brevity_corr":  "Brevedad (correlación r)",
 }
+
+# Comparación global (Cuadro de significación): las 15 variables estilométricas.
+# La comparación pareada usa solo los parámetros de las leyes (METRICS).
+METRICS_GLOBAL = [
+    "zipf_slope", "zipf_r2", "zipf_top_cov",
+    "heaps_beta", "heaps_k", "heaps_r2",
+    "brevity_slope", "brevity_corr",
+    "mean_word_length", "ttr", "hapax_rate",
+    "long_word_ratio", "short_word_ratio",
+    "mean_sent_len", "std_sent_len",
+]
+METRIC_LABELS.update({
+    "zipf_top_cov":     "Zipf cobertura top-10",
+    "heaps_k":          "Heaps k",
+    "mean_word_length": "Longitud media de palabra",
+    "ttr":              "TTR",
+    "hapax_rate":       "Tasa de hápax",
+    "long_word_ratio":  "Ratio palabras largas",
+    "short_word_ratio": "Ratio palabras cortas",
+    "mean_sent_len":    "Longitud media de oración",
+    "std_sent_len":     "Desviación estándar de oración",
+})
 
 
 # Tamaño del efecto
@@ -47,7 +69,7 @@ def global_tests(df_agg):
     hum = df_agg[df_agg["corpus"] == "humano"]
     rob = df_agg[df_agg["corpus"] == "robot"]
     rows = []
-    for m in METRICS:
+    for m in METRICS_GLOBAL:
         h, r = hum[m].dropna().values, rob[m].dropna().values
         U, p = stats.mannwhitneyu(h, r, alternative="two-sided")
         d = cohens_d_independent(h, r)
@@ -104,11 +126,12 @@ def _bh_correction(pvals):
     pvals = np.asarray(pvals, dtype=float)
     n = len(pvals)
     order = np.argsort(pvals)
+    ranked = pvals[order] * n / np.arange(1, n + 1)
+    # Monotonía (en orden de p creciente): cada p ajustado no puede superar el siguiente
+    ranked = np.minimum.accumulate(ranked[::-1])[::-1]
     corrected = np.empty(n)
-    corrected[order] = pvals[order] * n / (np.arange(1, n + 1))
-    # Monotonía: cada p ajustado no puede superar el siguiente
-    corrected = np.minimum.accumulate(corrected[::-1])[::-1]
-    return np.clip(corrected, 0, 1)
+    corrected[order] = np.clip(ranked, 0, 1)
+    return corrected
 
 
 # Formato de salida
@@ -121,11 +144,11 @@ def print_table(title, df):
 
 
 def run_analysis(df_agg, label="GLOBAL"):
-    print(f"\n{'═'*72}")
+    print(f"\n{'='*72}")
     print(f"  ANÁLISIS {label}")
     n = df_agg.groupby("corpus").size().to_dict()
     print(f"  N textos: TH={n.get('humano',0)}, TR={n.get('robot',0)}")
-    print(f"{'═'*72}")
+    print(f"{'='*72}")
 
     res_global = global_tests(df_agg)
     print_table("Comparación global — Mann-Whitney U (independiente)", res_global)
@@ -142,7 +165,7 @@ if __name__ == "__main__":
 
     # Agregar iteraciones bootstrap → mediana por texto
     df_agg = (
-        df.groupby(["file", "pair_id", "genre", "corpus"])[METRICS]
+        df.groupby(["file", "pair_id", "genre", "corpus"])[METRICS_GLOBAL]
         .median()
         .reset_index()
     )
@@ -154,18 +177,4 @@ if __name__ == "__main__":
     res_global.to_csv("results/analisis_global.csv", index=False)
     res_paired.to_csv("results/analisis_pareado_global.csv", index=False)
 
-    # Análisis por género
-    genre_frames = []
-    for genre in sorted(df_agg["genre"].unique()):
-        sub = df_agg[df_agg["genre"] == genre]
-        rg, rp = run_analysis(sub, f"GÉNERO: {genre}")
-        for df_r, tag in [(rg, "global"), (rp, "pareado")]:
-            df_r = df_r.copy()
-            df_r.insert(0, "Género", genre)
-            df_r.insert(1, "Tipo", tag)
-            genre_frames.append(df_r)
-
-    pd.concat(genre_frames, ignore_index=True).to_csv(
-        "results/analisis_por_genero.csv", index=False
-    )
     print("\nResultados guardados en results/")

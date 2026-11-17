@@ -1,4 +1,4 @@
-# ablacion.py
+# 05_ablacion.py
 # Estudio de ablación: rasgos estadísticos independientes del contenido y la lengua
 # (leyes de Zipf, Heaps, brevedad y métricas derivadas).
 # Evaluación con validación cruzada agrupada por artículo base.

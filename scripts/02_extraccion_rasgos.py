@@ -1,4 +1,4 @@
-# demo.py — extracción de métricas estilométricas con muestreo bootstrap
+# 02_extraccion_rasgos.py — extracción de métricas estilométricas con muestreo bootstrap
 import os
 import re
 import numpy as np

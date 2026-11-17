@@ -1,4 +1,4 @@
-# chargram_baseline.py - línea base SVM con n-gramas de caracteres (TF-IDF) y F1 por clase en T2
+# 08_baseline_chargrams.py - línea base SVM con n-gramas de caracteres (TF-IDF) y F1 por clase en T2
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer

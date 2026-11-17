@@ -1,5 +1,5 @@
-# fpr_ablacion.py
-# FPR (humano→robótico) con GroupKFold(k=5), mismo protocolo que ablacion.py.
+# 06_falsos_positivos.py
+# FPR (humano→robótico) con GroupKFold(k=5), mismo protocolo que 05_ablacion.py.
 # Añade FPR a los grupos clave y al conjunto completo de rasgos.
 import warnings
 import numpy as np
