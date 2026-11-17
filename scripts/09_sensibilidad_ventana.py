@@ -1,7 +1,7 @@
 # 09_sensibilidad_ventana.py
 # Analiza la sensibilidad de los resultados al tamaño de ventana bootstrap.
 # Para cada W ∈ {200, 400, 600, 800} tokens:
-#   - Extrae rasgos (n=30 iteraciones bootstrap, semilla fija)
+#   - Extrae rasgos (n=100 iteraciones bootstrap, semilla fija)
 #   - Agrega por mediana por texto
 #   - Evalúa con GroupKFold(k=5) — SVM (mejor modelo en protocolo principal)
 #   - Reporta F1 macro, AUC y cobertura (textos incluidos)
@@ -16,7 +16,7 @@ from sklearn.svm import SVC
 from sklearn.model_selection import GroupKFold
 from sklearn.metrics import f1_score, roc_auc_score
 from functions import (zipf_slope, heaps_beta, brevity_slope, lexical_stats,
-                       lexical_diversity, freq_entropy, word_length_ratios,
+                       lexical_diversity, word_length_ratios,
                        zipf_coverage)
 
 warnings.filterwarnings("ignore")
@@ -26,7 +26,7 @@ _nlp = spacy.load("es_core_news_sm",
 
 CORPUS_CSV       = "data/corpus_robot-talk_2026-02-04.csv"
 WINDOW_SIZES     = [200, 400, 600, 800]
-N_BOOTSTRAP      = 30       # menos iteraciones para rapidez; suficiente para sensibilidad
+N_BOOTSTRAP      = 100
 RANDOM_SEED      = 42
 N_FOLDS          = 5
 RANDOM_STATE     = 42
@@ -67,11 +67,11 @@ def extract_features(tokens, mean_sl, std_sl):
     beta_h, k_h, r2_h     = heaps_beta(tokens)
     slope_b, r_b          = brevity_slope(tokens)
     mwl, ttr              = lexical_stats(tokens)
-    hapax_r, herdan, yule = lexical_diversity(tokens)
-    entropy               = freq_entropy(tokens)
+    hapax_r, _, _         = lexical_diversity(tokens)
     long_r, short_r       = word_length_ratios(tokens)
+    # Mismo orden que ALL_STAT_COLS (15 rasgos del artículo)
     return [slope_z, r2_z, top_cov, beta_h, k_h, r2_h, slope_b, r_b,
-            mwl, ttr, hapax_r, herdan, yule, entropy, long_r, short_r,
+            mwl, ttr, hapax_r, long_r, short_r,
             mean_sl, std_sl]
 
 
